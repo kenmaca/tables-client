@@ -9,6 +9,9 @@ import {
 } from '../../Const';
 import Firebase from '../../utils/Firebase';
 import Geofire from 'geofire';
+import {
+  callMore
+} from '../../views/More';
 
 // components
 import Card from './Card';
@@ -26,6 +29,9 @@ export default class AvailableList extends Component {
         rowHasChanged: (r1, r2) => r1 !== r2
       })
     };
+
+    // bindings
+    this.callIfEmpty = this.callIfEmpty.bind(this);
   }
 
   componentDidMount() {
@@ -68,10 +74,24 @@ export default class AvailableList extends Component {
         maximumAge: 1000
       }
     );
+
+    // initial trigger to update view from server
+    this.callIfEmpty();
   }
 
   componentWillUnmount() {
     this.gfEntered && this.gfEntered.cancel();
+    this.timer && clearTimeout(this.timer);
+  }
+
+  callIfEmpty() {
+    this.timer && clearTimeout(this.timer);
+    if (Object.keys(this.restaurants).filter(
+      restaurant => Date.now() <= this.restaurants[restaurant].availableUntil
+    ).length < 1) callMore();
+
+    // and check again in two minutes
+    this.timer = setInterval(this.callIfEmpty, 120000);
   }
 
   render() {

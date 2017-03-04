@@ -28,17 +28,7 @@ export default class More extends Component {
     this.flipFirst();
 
     // signal new task to pull new restaurants
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        Firebase.database().ref('tasks').push({
-          coords: position.coords
-        });
-      }, error => console.log(error), {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
-      }
-    );
+    callMore();
   }
 
   flipFirst() {
@@ -144,3 +134,18 @@ const styles = StyleSheet.create({
     opacity: 0
   }
 });
+
+// helpers
+export function callMore() {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      Firebase.database().ref('tasks').push({
+        coords: position.coords
+      });
+    }, error => console.log(error), {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 1000
+    }
+  );
+}
