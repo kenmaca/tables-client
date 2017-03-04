@@ -3003,6 +3003,10 @@ react-native-experimental-navigation@0.26.x:
     fbjs "^0.8.1"
     react-addons-pure-render-mixin "^15.0.2"
 
+react-native-geocoder@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/react-native-geocoder/-/react-native-geocoder-0.4.6.tgz#ddbb55714bfe4e355b32358997f783576b65bace"
+
 react-native-parallax-view@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/react-native-parallax-view/-/react-native-parallax-view-2.0.6.tgz#7de78edb7a2a0aba6c01b99fce828d387cec3e93"

@@ -29,9 +29,7 @@ export default class Main extends Component {
               <Header />
             )}
             windowHeight={300}
-            backgroundSource={{
-              uri: 'https://images.pexels.com/photos/24859/pexels-photo-24859.jpg'
-            }}
+            backgroundSource={require('../../res/media/cover.jpg')}
             scrollableViewStyle={styles.content}>
             <AvailableList />
             <View style={styles.footer}>
@@ -58,11 +56,12 @@ export default class Main extends Component {
                 }}
                 style={styles.button}>
                 <Text style={styles.buttonText}>
-                  Find more with Pronto
+                  Find more with Frrand
                 </Text>
               </TouchableOpacity>
             </View>
           </ParallaxView>
+          <Options />
         </View>
         <Animatable.View
           ref='ballContainer'

@@ -5,7 +5,7 @@ import {
   View, StyleSheet, Text, Image, TouchableOpacity
 } from 'react-native';
 import {
-  Colors, Sizes
+  Colors, Sizes, Strings
 } from '../Const';
 import {
   Actions
@@ -58,11 +58,11 @@ export default class More extends Component {
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.title}>
-            Pronto is looking for more tables
+            {`${Strings.AppName} is looking for more tables`}
           </Text>
           <Text style={styles.text}>
             We find real-time restaurant availability by calling matching
-            nearby restaurants directly, so this may take a few minutes
+            nearby restaurants directly, so this may take a minute
           </Text>
           <View style={styles.loader}>
             <AnimatableIcon
@@ -83,7 +83,7 @@ export default class More extends Component {
           onPress={Actions.main}
           style={styles.close}>
           <Text style={styles.closeText}>
-            OK — We'll notify you when we find new tables
+            OK — We'll update the list when restaurants respond
           </Text>
         </TouchableOpacity>
       </View>
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: Sizes.InnerFrame,
     padding: Sizes.OuterFrame,
     backgroundColor: Colors.Background
   },

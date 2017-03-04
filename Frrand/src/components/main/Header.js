@@ -7,14 +7,45 @@ import {
 import {
   Colors, Sizes
 } from '../../Const';
+import Geocoder from 'react-native-geocoder';
 
 export default class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      region: 'Nearby'
+    };
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => Geocoder.geocodePosition({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }).then(location => {
+        if (location[0]) {
+          this.setState({
+            region: [
+              location[0].locality, location[0].adminArea
+            ].filter(l => l).join(', ') || 'Nearby',
+            coords: position.coords
+          });
+        }
+      }), error => console.log(error), {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.subtitle}>RESTAURANTS CURRENTLY AVAILABLE IN</Text>
+        <Text style={styles.subtitle}>RESTAURANTS AVAILABLE IN</Text>
         <Text style={styles.title}>
-          Toronto, ON
+          {this.state.region}
         </Text>
       </View>
     );
