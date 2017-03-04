@@ -8,7 +8,7 @@ import {
 // components
 import Index from './src/Index';
 
-export default class Pronto extends Component {
+export default class Frrand extends Component {
   render() {
     return (
       <Index />
@@ -16,4 +16,4 @@ export default class Pronto extends Component {
   }
 }
 
-AppRegistry.registerComponent('Pronto', () => Pronto);
+AppRegistry.registerComponent('Frrand', () => Frrand);
