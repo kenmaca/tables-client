@@ -31,6 +31,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8AEE38AC1C8D4D9F90F005C6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12997443DCBA498786096900 /* Entypo.ttf */; };
 		A998786FB18249AD8207BA59 /* libRNGeocoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C03B8948E64F419571F038 /* libRNGeocoder.a */; };
+		BE16EE101E6ABB0A000CDA9A /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BE16EE0F1E6ABB0A000CDA9A /* logo.png */; };
 		CE6AC23E74764E1BB816B859 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C9A16FAF9C449568BEFF475 /* FontAwesome.ttf */; };
 		DC0D7AC4A79C4E90B990391E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6CDC64D7F0B4F6CB15B6E27 /* Octicons.ttf */; };
 		EAD9970CA565470EA97A840A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F259E32170E49C6A8843E1E /* Ionicons.ttf */; };
@@ -261,6 +262,7 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A1AB23D38C2B49C18FC8695D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		A74210F1F6354469A0714D81 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		BE16EE0F1E6ABB0A000CDA9A /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		DBDE9A511F8347D681494E09 /* RNGeocoder.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGeocoder.xcodeproj; path = "../node_modules/react-native-geocoder/ios/RNGeocoder.xcodeproj"; sourceTree = "<group>"; };
 		F2B9BDB6840A46FFB21FB803 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F6CDC64D7F0B4F6CB15B6E27 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 		13B07FAE1A68108700A75B9A /* Frrand */ = {
 			isa = PBXGroup;
 			children = (
+				BE16EE0F1E6ABB0A000CDA9A /* logo.png */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -801,6 +804,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE16EE101E6ABB0A000CDA9A /* logo.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				8AEE38AC1C8D4D9F90F005C6 /* Entypo.ttf in Resources */,
