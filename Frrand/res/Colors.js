@@ -1,5 +1,8 @@
 export const Colors = {
 
+  // scheme
+  Primary: '#66C75C',
+
   // backgrounds
   Background: '#222222',
   Foreground: '#FFFFFF',

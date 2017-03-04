@@ -12,10 +12,10 @@ import {
 } from './Const';
 
 // views
+import Loader from './views/Loader';
 import Main from './views/Main';
 import More from './views/More';
 import Web from './views/Web';
-import Option from './views/Option';
 
 export default class Index extends Component {
   render() {
@@ -27,6 +27,10 @@ export default class Index extends Component {
             key='root'>
               <Scene
                 initial
+                key='loader'
+                component={Loader}
+                type='replace' />
+              <Scene
                 key='main'
                 component={Main}
                 type='replace' />
@@ -37,10 +41,6 @@ export default class Index extends Component {
               <Scene
                 key='web'
                 component={Web} />
-              <Scene
-                direction='vertical'
-                key='option'
-                component={Option} />
           </Scene>
         </Router>
       </View>
