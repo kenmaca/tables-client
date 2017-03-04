@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class Frrand extends Component {
+export default class Pronto extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Frrand', () => Frrand);
+AppRegistry.registerComponent('Pronto', () => Pronto);
