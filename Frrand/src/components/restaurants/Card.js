@@ -80,18 +80,29 @@ export default class Card extends Component {
                 <View style={styles.header}>
                   <Text style={styles.title}>
                     {this.state.name || 'Unnamed'}
+                    <Text style={styles.location}>
+                      {
+                        ` · ${
+                          (
+                            this.props.distance
+                            && (
+                              this.props.distance >= 1
+                              ? `${this.props.distance.toFixed(1)} km`
+                              : `${(this.props.distance * 1000).toFixed(0)} m`
+                            )
+                          ) || this.state.location.address1
+                          || 'Nearby'}`
+                      }
+                    </Text>
                   </Text>
                   <Text style={styles.location}>
                     {
-                      (
-                        this.props.distance
-                        && (
-                          this.props.distance >= 1
-                          ? `${this.props.distance.toFixed(1)} km`
-                          : `${(this.props.distance * 1000).toFixed(0)} m`
-                        )
-                      ) || this.state.location.address1
-                      || 'Nearby'
+                      this.state.categories
+                      && (
+                        this.state.categories.map(
+                          category => category.title
+                        ).join(', ')
+                      ) || ''
                     }
                   </Text>
                 </View>
@@ -156,7 +167,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: Sizes.H3,
-    fontWeight: Sizes.Light
+    fontWeight: Sizes.Bold
   },
 
   location: {
