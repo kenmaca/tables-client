@@ -32,7 +32,6 @@ export default class Main extends Component {
             backgroundSource={require('../../res/media/cover.jpg')}
             scrollableViewStyle={styles.content}>
             <AvailableList getOptions={() => {
-              console.log(this.refs.options);
               return (
                 this.refs.options
                 ? this.refs.options.getOptions()
