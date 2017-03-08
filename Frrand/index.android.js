@@ -17,5 +17,7 @@ export default class Frrand extends Component {
   }
 }
 
-Frrand = codePush(Frrand);
+Frrand = codePush({
+  installMode: codePush.InstallMode.ON_NEXT_RESUME
+})(Frrand);
 AppRegistry.registerComponent('Frrand', () => Frrand);
