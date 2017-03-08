@@ -2,21 +2,135 @@ import React, {
   Component
 } from 'react';
 import {
-  View, StyleSheet, Image
+  View, StyleSheet, Image, ScrollView
 } from 'react-native';
 import {
   Colors, Sizes
 } from '../../Const';
 
+// components
+import OptionButton from './OptionButton';
+
 export default class Options extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showClearButton: false
+    };
+
+    // bindings
+    this.nextPriceText = this.nextPriceText.bind(this);
+  }
+
+  nextPriceText(text) {
+    return ({
+      'Price': '  $  ',
+      '  $  ': '  $$  ',
+      '  $$  ': ' $$$ ',
+      ' $$$ ': ' $$$$ ',
+      ' $$$$ ': 'Price'
+    })[text]
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.buttons}>
-          <Image
-            source={require('../../../res/media/logo.png')}
-            style={styles.logo} />
-        </View>
+        <ScrollView
+          horizontal
+          contentContainerStyle={styles.buttons}>
+          {
+            this.state.showClearButton && (
+              <OptionButton
+                disableToggle
+                selected
+                onPress={() => Object.values(this.refs).forEach(
+                  button => button.select(false)
+                )}
+                text='Clear' />
+            )
+          }
+          <OptionButton
+            ref='price'
+            onPress={() => {
+              let nextPrice = this.nextPriceText(this.refs.price.state.text);
+              this.refs.price.changeText(nextPrice);
+              if (nextPrice === 'Price') {
+                this.refs.price.select(false);
+              } else {
+                this.refs.price.select(true);
+              }
+            }}
+            text='Price' />
+          <OptionButton
+            ref='fast_food'
+            text='Fast Food' />
+          <OptionButton
+            ref='breakfast'
+            text='Breakfast' />
+          <OptionButton
+            ref='bar'
+            text='Bar' />
+          <OptionButton
+            ref='desserts'
+            text='Desserts' />
+          <OptionButton
+            ref='cafe'
+            text='Cafe' />
+          <OptionButton
+            ref='seafood'
+            text='Seafood' />
+          <OptionButton
+            ref='italian'
+            text='Italian' />
+          <OptionButton
+            ref='indian'
+            text='Indian' />
+          <OptionButton
+            ref='japanese'
+            text='Japanese' />
+          <OptionButton
+            ref='chinese'
+            text='Chinese' />
+          <OptionButton
+            ref='mexican'
+            text='Mexican' />
+          <OptionButton
+            ref='vegetarian'
+            text='Vegetarian' />
+          <OptionButton
+            ref='halal'
+            text='Halal' />
+          <OptionButton
+            ref='vietnamese'
+            text='Vietnamese' />
+          <OptionButton
+            ref='thai'
+            text='Thai' />
+          <OptionButton
+            ref='steak'
+            text='Steak' />
+          <OptionButton
+            ref='canadian'
+            text='Canadian' />
+          <OptionButton
+            ref='caribbean'
+            text='Caribbean' />
+          <OptionButton
+            ref='korean'
+            text='Korean' />
+          <OptionButton
+            ref='greek'
+            text='Greek' />
+          <OptionButton
+            ref='bakeries'
+            text='Bakeries' />
+          <OptionButton
+            ref='pizza'
+            text='Pizza' />
+          <OptionButton
+            ref='mediterranean'
+            text='Mediterranean' />
+        </ScrollView>
       </View>
     );
   }
@@ -24,13 +138,12 @@ export default class Options extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: Sizes.InnerFrame,
     backgroundColor: Colors.ModalBackground
   },
 
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center'
+    padding: Sizes.InnerFrame,
+    flexDirection: 'row'
   },
 
   logo: {

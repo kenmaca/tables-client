@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
 });
 
 // helpers
-export function callMore() {
+export function callMore(options) {
   navigator.geolocation.getCurrentPosition(
     position => {
-      Firebase.database().ref('tasks').push({
+      Firebase.database().ref('tasks').push(Object.assign({
         coords: position.coords
-      });
+      }, options || {}));
     }, error => console.log(error), {
       timeout: 20000,
       maximumAge: 1000

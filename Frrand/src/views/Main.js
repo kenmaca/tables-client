@@ -41,24 +41,9 @@ export default class Main extends Component {
                   color={Colors.LightestText} />
               </View>
               <Text style={styles.moreText}>
-                Don't like these options?
+                Restaurants will show up automatically above as soon
+                as they confirm availability
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.refs.ball.transitionTo({
-                    width: Sizes.Height * 4,
-                    height: Sizes.Height * 4,
-                    borderRadius: Sizes.Height * 2
-                  }, 500, 'ease-in');
-
-                  // proceed to more screen
-                  InteractionManager.runAfterInteractions(Actions.more);
-                }}
-                style={styles.button}>
-                <Text style={styles.buttonText}>
-                  Find more with Frrand
-                </Text>
-              </TouchableOpacity>
             </View>
           </ParallaxView>
           <Options />
@@ -114,7 +99,10 @@ const styles = StyleSheet.create({
   },
 
   moreText: {
-    marginBottom: Sizes.InnerFrame,
+    textAlign: 'center',
+    marginBottom: Sizes.OuterFrame,
+    paddingLeft: Sizes.OuterFrame * 2,
+    paddingRight: Sizes.OuterFrame * 2,
     fontSize: Sizes.Text,
     fontWeight: Sizes.Light,
     color: Colors.LightestText

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 
   text: {
     backgroundColor: Colors.Transparent,
-    fontSize: Sizes.SmallText,
+    fontSize: 10,
     color: Colors.Text
   }
 });
