@@ -47,7 +47,7 @@ export default class Card extends Component {
   update() {
     this.timer && clearTimeout(this.timer);
     this.setState({});
-    this.timer = setInterval(this.update, 60000);
+    this.timer = setInterval(this.update, 5 * 60 * 1000);
   }
 
   componentWillReceiveProps(props) {
