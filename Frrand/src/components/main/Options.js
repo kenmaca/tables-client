@@ -50,7 +50,7 @@ export default class Options extends Component {
       terms: options.join(' '),
       price: (
         Object.keys(PRICE_LEVELS).indexOf(this.refs['price'].state.text) > 0
-        ? Object.keys(PRICE_LEVELS).indexOf(this.refs['price'].state.text) + 1
+        ? Object.keys(PRICE_LEVELS).indexOf(this.refs['price'].state.text)
         : null
       )
     }
