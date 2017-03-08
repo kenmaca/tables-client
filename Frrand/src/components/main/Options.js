@@ -11,6 +11,15 @@ import {
 // components
 import OptionButton from './OptionButton';
 
+// consts
+PRICE_LEVELS = {
+  'Price': '  $  ',
+  '  $  ': '  $$  ',
+  '  $$  ': ' $$$ ',
+  ' $$$ ': ' $$$$ ',
+  ' $$$$ ': 'Price'
+};
+
 export default class Options extends Component {
   constructor(props) {
     super(props);
@@ -20,16 +29,31 @@ export default class Options extends Component {
 
     // bindings
     this.nextPriceText = this.nextPriceText.bind(this);
+    this.getOptions = this.getOptions.bind(this);
   }
 
   nextPriceText(text) {
-    return ({
-      'Price': '  $  ',
-      '  $  ': '  $$  ',
-      '  $$  ': ' $$$ ',
-      ' $$$ ': ' $$$$ ',
-      ' $$$$ ': 'Price'
-    })[text]
+    return (PRICE_LEVELS)[text]
+  }
+
+  getOptions() {
+    let options = Object.keys(this.refs).filter(
+      option => this.refs[option].isSelected()
+    ).filter(
+      option => option !== 'price'
+    ).map(
+      option => this.refs[option].state.text
+    );
+
+    return {
+      options: options,
+      terms: options.join(' '),
+      price: (
+        Object.keys(PRICE_LEVELS).indexOf(this.refs['price'].state.text) > 0
+        ? Object.keys(PRICE_LEVELS).indexOf(this.refs['price'].state.text)
+        : null
+      )
+    }
   }
 
   render() {
@@ -68,8 +92,8 @@ export default class Options extends Component {
             ref='breakfast'
             text='Breakfast' />
           <OptionButton
-            ref='bar'
-            text='Bar' />
+            ref='pub'
+            text='Pub' />
           <OptionButton
             ref='desserts'
             text='Desserts' />

@@ -46,7 +46,7 @@ export default class Main extends Component {
               </Text>
             </View>
           </ParallaxView>
-          <Options />
+          <Options ref='options' />
         </View>
         <Animatable.View
           ref='ballContainer'
