@@ -58,7 +58,9 @@ export default class AvailableList extends Component {
 
             // update display
             this.setState({
-              data: this.state.data.cloneWithRows(Object.keys(this.restaurants).sort(
+              data: this.state.data.cloneWithRows(
+                Object.keys(this.restaurants
+              ).sort(
                 (a, b) => (
                   this.restaurants[a].distance > this.restaurants[b].distance
                   ? 1: -1
@@ -87,7 +89,7 @@ export default class AvailableList extends Component {
     this.timer && clearTimeout(this.timer);
     if (Object.keys(this.restaurants).filter(
       restaurant => Date.now() <= this.restaurants[restaurant].availableUntil
-    ).length < 1) callMore();
+    ).length < 6) callMore(this.props.getOptions());
 
     // and check again in two minutes
     this.timer = setInterval(this.callIfEmpty, 120000);

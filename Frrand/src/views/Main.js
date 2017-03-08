@@ -31,7 +31,14 @@ export default class Main extends Component {
             windowHeight={300}
             backgroundSource={require('../../res/media/cover.jpg')}
             scrollableViewStyle={styles.content}>
-            <AvailableList />
+            <AvailableList getOptions={() => {
+              console.log(this.refs.options);
+              return (
+                this.refs.options
+                ? this.refs.options.getOptions()
+                : {}
+              );
+            }}/>
             <View style={styles.footer}>
               <View style={styles.separator} />
               <View style={styles.logo}>
