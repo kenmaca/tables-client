@@ -115,12 +115,7 @@ export default class Card extends Component {
                   {
                     `${this.state.seatsAvailable || 0} seats until ${
                       DateFormat(
-                        new Date(
-                          (
-                            this.state.lastCalled
-                            || Date.now()
-                          ) + (15 * 60 * 1000)
-                        ),
+                        this.state.availableUntil,
                         'h:MM TT'
                       )
                     }`
