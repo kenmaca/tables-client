@@ -84,7 +84,11 @@ export default class Main extends Component {
               () => {
 
                 // send out new Task and update available list
-                callMore(this.refs.options.getOptions());
+                this.taskInitiator && clearTimeout(this.taskInitiator);
+                this.taskInitiator = setTimeout(
+                  () => callMore(this.refs.options.getOptions()),
+                  3000
+                );
                 this.refs.available && this.refs.available.update();
               }
             } />
