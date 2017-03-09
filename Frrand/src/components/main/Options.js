@@ -30,6 +30,7 @@ export default class Options extends Component {
     // bindings
     this.nextPriceText = this.nextPriceText.bind(this);
     this.getOptions = this.getOptions.bind(this);
+    this.notifyMain = this.notifyMain.bind(this);
   }
 
   nextPriceText(text) {
@@ -41,8 +42,6 @@ export default class Options extends Component {
       option => this.refs[option].isSelected()
     ).filter(
       option => option !== 'price'
-    ).map(
-      option => this.refs[option].state.text
     );
 
     return {
@@ -56,6 +55,10 @@ export default class Options extends Component {
     }
   }
 
+  notifyMain() {
+    this.props.onChange && this.props.onChange(this.getOptions());
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -67,9 +70,14 @@ export default class Options extends Component {
               <OptionButton
                 disableToggle
                 selected
-                onPress={() => Object.values(this.refs).forEach(
-                  button => button.select(false)
-                )}
+                onPress={() => {
+                  Object.values(this.refs).forEach(
+                    button => button.select(false)
+                  );
+
+                  // alert parent
+                  this.notifyMain();
+                }}
                 text='Clear' />
             )
           }
@@ -83,75 +91,105 @@ export default class Options extends Component {
               } else {
                 this.refs.price.select(true);
               }
+
+              // alert parent
+              this.notifyMain();
             }}
             text='Price' />
           <OptionButton
-            ref='fast_food'
+            onPress={this.notifyMain}
+            ref='hotdogs'
             text='Fast Food' />
           <OptionButton
-            ref='breakfast'
-            text='Breakfast' />
+            onPress={this.notifyMain}
+            ref='breakfast_brunch'
+            text='Breakfast & Brunch' />
           <OptionButton
-            ref='pub'
-            text='Pub' />
+            onPress={this.notifyMain}
+            ref='comfortfood'
+            text='Comfort Food' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='desserts'
             text='Desserts' />
           <OptionButton
-            ref='cafe'
+            onPress={this.notifyMain}
+            ref='cafes'
             text='Cafe' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='seafood'
             text='Seafood' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='italian'
             text='Italian' />
           <OptionButton
-            ref='indian'
+            onPress={this.notifyMain}
+            ref='indpak'
             text='Indian' />
           <OptionButton
+            onPress={this.notifyMain}
+            ref='bars'
+            text='Bars' />
+          <OptionButton
+            onPress={this.notifyMain}
             ref='japanese'
             text='Japanese' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='chinese'
             text='Chinese' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='mexican'
             text='Mexican' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='vegetarian'
             text='Vegetarian' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='halal'
             text='Halal' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='vietnamese'
             text='Vietnamese' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='thai'
             text='Thai' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='steak'
             text='Steak' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='canadian'
             text='Canadian' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='caribbean'
             text='Caribbean' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='korean'
             text='Korean' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='greek'
             text='Greek' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='bakeries'
             text='Bakeries' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='pizza'
             text='Pizza' />
           <OptionButton
+            onPress={this.notifyMain}
             ref='mediterranean'
             text='Mediterranean' />
         </ScrollView>

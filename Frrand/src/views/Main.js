@@ -40,16 +40,13 @@ export default class Main extends Component {
             backgroundSource={require('../../res/media/cover.jpg')}
             scrollableViewStyle={styles.content}>
             <AvailableList
-              onUpdate={restaurants => this.setState({
-                showLoader: Object.keys(restaurants).length <= 0
+              ref='available'
+              onChange={visible => this.setState({
+                showLoader: visible.length <= 0
               })}
-              getOptions={() => {
-                return (
-                  this.refs.options
-                  ? this.refs.options.getOptions()
-                  : {}
-                );
-              }} />
+              getOptions={
+                () => this.refs.options && this.refs.options.getOptions()
+              } />
             <View style={styles.footer}>
               <View style={styles.separator} />
               <View style={styles.logo}>
@@ -71,7 +68,11 @@ export default class Main extends Component {
               </Text>
             </View>
           </ParallaxView>
-          <Options ref='options' />
+          <Options
+            ref='options'
+            onChange={
+              () => this.refs.available && this.refs.available.update()
+            } />
         </View>
         <Animatable.View
           ref='ballContainer'

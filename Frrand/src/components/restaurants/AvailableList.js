@@ -24,6 +24,7 @@ export default class AvailableList extends Component {
       Firebase.database().ref('nearby')
     );
     this.restaurants = {};
+    this.rows = [];
     this.state = {
       data: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2
@@ -32,6 +33,9 @@ export default class AvailableList extends Component {
 
     // bindings
     this.callIfEmpty = this.callIfEmpty.bind(this);
+    this.update = this.update.bind(this);
+    this.filter = this.filter.bind(this);
+    this.getVisible = this.getVisible.bind(this);
   }
 
   componentDidMount() {
@@ -66,10 +70,7 @@ export default class AvailableList extends Component {
                   ? 1: -1
                 )
               ))
-            });
-
-            // update parent view if provided
-            this.props.onUpdate && this.props.onUpdate(this.restaurants);
+            }, () => this.props.onChange(this.getVisible()));
           }
         );
 
@@ -98,6 +99,39 @@ export default class AvailableList extends Component {
     this.timer = setInterval(this.callIfEmpty, 120000);
   }
 
+  update() {
+    this.rows.forEach(row => row && row.setState({}));
+
+    // TODO: hacky, but wait for all rows to re-render before re-rendering
+    setTimeout(() => this.props.onChange(this.getVisible()), 100);
+  }
+
+  getVisible() {
+    return this.rows.filter(row => row && this.filter(row.state));
+  }
+
+  filter(restaurant) {
+    let options = this.props.getOptions();
+    return (
+      restaurant.name
+      && (parseInt(restaurant.seatsAvailable) > 0)
+      && (restaurant.availableUntil > Date.now())
+
+      // price range
+      && (
+        !options.price
+        || options.price === restaurant.price.length
+
+      // category filter
+      ) && (
+        options.options.length <= 0
+        || restaurant.categories.filter(
+          category => options.options.indexOf(category.alias) > -1
+        ).length > 0
+      )
+    )
+  }
+
   render() {
     return (
       <ListView
@@ -105,6 +139,8 @@ export default class AvailableList extends Component {
         dataSource={this.state.data}
         renderRow={data => (
           <Card
+            ref={ref => this.rows.push(ref)}
+            filter={this.filter}
             id={data}
             distance={this.restaurants[data].distance} />
         )} />

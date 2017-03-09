@@ -47,7 +47,7 @@ export default class Card extends Component {
   update() {
     this.timer && clearTimeout(this.timer);
     this.setState({});
-    this.timer = setInterval(this.update, 5 * 60 * 1000);
+    this.timer = setInterval(this.update, 1 * 60 * 1000);
   }
 
   componentWillReceiveProps(props) {
@@ -62,11 +62,7 @@ export default class Card extends Component {
 
     // only present if there are seats available and within period
     return (
-      (
-        this.state.name
-        && (parseInt(this.state.seatsAvailable) > 0)
-        && (this.state.availableUntil > Date.now())
-      ) ? (
+      this.props.filter(this.state) ? (
         <TouchableWithoutFeedback
           onPress={() => Actions.web({
             uri: this.state.url
