@@ -10,6 +10,9 @@ import {
 import {
   Actions
 } from 'react-native-router-flux';
+import {
+  callMore
+} from './More';
 
 // components
 import * as Animatable from 'react-native-animatable';
@@ -47,6 +50,7 @@ export default class Main extends Component {
             scrollableViewStyle={styles.content}>
             <AvailableList
               ref='available'
+              callMore={callMore}
               onChange={visible => this.setState({
                 showLoader: visible.length <= 0
               })}
@@ -77,7 +81,12 @@ export default class Main extends Component {
           <Options
             ref='options'
             onChange={
-              () => this.refs.available && this.refs.available.update()
+              () => {
+
+                // send out new Task and update available list
+                callMore(this.refs.options.getOptions());
+                this.refs.available && this.refs.available.update();
+              }
             } />
         </View>
         <Animatable.View

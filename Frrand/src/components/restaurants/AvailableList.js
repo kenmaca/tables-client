@@ -9,9 +9,6 @@ import {
 } from '../../Const';
 import Firebase from '../../utils/Firebase';
 import Geofire from 'geofire';
-import {
-  callMore
-} from '../../views/More';
 
 // components
 import Card from './Card';
@@ -93,7 +90,7 @@ export default class AvailableList extends Component {
     this.timer && clearTimeout(this.timer);
     if (Object.keys(this.restaurants).filter(
       restaurant => Date.now() <= this.restaurants[restaurant].availableUntil
-    ).length < 6) callMore(this.props.getOptions());
+    ).length < 6) this.props.callMore(this.props.getOptions());
 
     // and check again in two minutes
     this.timer = setInterval(this.callIfEmpty, 120000);
