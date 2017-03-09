@@ -67,6 +67,9 @@ export default class AvailableList extends Component {
                 )
               ))
             });
+
+            // update parent view if provided
+            this.props.onUpdate && this.props.onUpdate(this.restaurants);
           }
         );
 

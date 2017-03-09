@@ -18,8 +18,16 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../components/main/Header';
 import Options from '../components/main/Options';
 import AvailableList from '../components/restaurants/AvailableList';
+import AnimatedLoader from '../components/common/AnimatedLoader';
 
 export default class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLoader: true
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -31,20 +39,31 @@ export default class Main extends Component {
             windowHeight={300}
             backgroundSource={require('../../res/media/cover.jpg')}
             scrollableViewStyle={styles.content}>
-            <AvailableList getOptions={() => {
-              return (
-                this.refs.options
-                ? this.refs.options.getOptions()
-                : {}
-              );
-            }}/>
+            <AvailableList
+              onUpdate={restaurants => this.setState({
+                showLoader: Object.keys(restaurants).length <= 0
+              })}
+              getOptions={() => {
+                return (
+                  this.refs.options
+                  ? this.refs.options.getOptions()
+                  : {}
+                );
+              }} />
             <View style={styles.footer}>
               <View style={styles.separator} />
               <View style={styles.logo}>
-                <MaterialIcon
-                  name='restaurant-menu'
-                  size={30}
-                  color={Colors.LightestText} />
+                {
+                  this.state.showLoader
+                  ? (
+                    <AnimatedLoader color={Colors.LightestText} />
+                  ): (
+                    <MaterialIcon
+                      name='restaurant'
+                      color={Colors.LightestText}
+                      size={30} />
+                  )
+                }
               </View>
               <Text style={styles.moreText}>
                 Restaurants will show up automatically above as soon
