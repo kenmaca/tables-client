@@ -103,7 +103,7 @@ export default class AvailableList extends Component {
     this.rows.forEach(row => row && row.setState({}));
 
     // TODO: hacky, but wait for all rows to re-render before re-rendering
-    setTimeout(() => this.props.onChange(this.getVisible()), 100);
+    setTimeout(() => this.props.onChange(this.getVisible()), 500);
   }
 
   getVisible() {

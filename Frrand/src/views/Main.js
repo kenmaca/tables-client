@@ -28,6 +28,12 @@ export default class Main extends Component {
     };
   }
 
+  componentDidMount() {
+
+    // toggle loader on initial load
+    this.refs.available.update();
+  }
+
   render() {
     return (
       <View style={styles.container}>
