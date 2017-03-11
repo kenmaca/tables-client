@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    padding: Sizes.OuterFrame
+    padding: Sizes.OuterFrame,
+    paddingBottom: Sizes.OuterFrame * 2
   },
 
   title: {

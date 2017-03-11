@@ -86,7 +86,7 @@ export default class Main extends Component {
             header={(
               <Header coords={this.state.coords} />
             )}
-            windowHeight={300}
+            windowHeight={200}
             backgroundSource={this.background}
             scrollableViewStyle={styles.content}>
             <AvailableList
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    top: -Sizes.OuterFrame * 2,
     backgroundColor: Colors.Transparent
   },
 
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     width: 50,
-    backgroundColor: Colors.Background
+    backgroundColor: Colors.Background,
   },
 
   moreText: {

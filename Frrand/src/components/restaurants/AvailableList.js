@@ -124,6 +124,7 @@ export default class AvailableList extends Component {
   render() {
     return (
       <FlatList
+        key='restaurants'
         style={styles.container}
         data={this.state.sorted}
         renderItem={this.renderItem} />
@@ -133,6 +134,7 @@ export default class AvailableList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: Sizes.OuterFrame
+    margin: Sizes.InnerFrame,
+    marginBottom: Sizes.OuterFrame * 2
   }
 });

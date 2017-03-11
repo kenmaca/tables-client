@@ -17,6 +17,7 @@ import {
 // components
 import CircularImage from '../common/CircularImage';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import AnimatedLoader from '../common/AnimatedLoader';
 import Stars from '../common/Stars';
 
 export default class Card extends Component {
@@ -92,7 +93,7 @@ export default class Card extends Component {
   isPending() {
     return (
       this.state.call.processed
-      && Date.now() - this.state.call.lastAttempted < 60 * 1000 * 100000
+      && Date.now() - this.state.call.lastAttempted < 60 * 1000
     );
   }
 
@@ -175,11 +176,56 @@ export default class Card extends Component {
 
   renderPending() {
     return (
-      <View>
-        <Text>
-          {`${this.getName()} is pending calling`}
-        </Text>
-      </View>
+      <Animatable.View
+        animation='zoomIn'
+        duration={200}
+        style={[
+          styles.container,
+          styles.pendingContainer
+        ]}>
+        <View style={styles.content}>
+          <View style={styles.body}>
+            <View style={styles.header}>
+              <Text style={[
+                styles.title,
+                styles.pendingText
+              ]}>
+                {`${this.state.name}`}
+                <Text style={styles.location}>
+                  {
+                    ` · ${
+                      (
+                        this.props.distance
+                        && (
+                          this.props.distance >= 1
+                          ? `${this.props.distance.toFixed(1)} km`
+                          : `${(this.props.distance * 1000).toFixed(0)} m`
+                        )
+                      ) || this.state.location.address1
+                      || 'Nearby'}`
+                  }
+                </Text>
+              </Text>
+              <Text style={[
+                styles.location,
+                styles.pendingText
+              ]}>
+                {
+                  this.state.categories
+                  && (
+                    this.state.categories.map(
+                      category => category.title
+                    ).join(', ')
+                  ) || ''
+                }
+              </Text>
+            </View>
+            <AnimatedLoader
+              size={20}
+              color={Colors.LightestText} />
+          </View>
+        </View>
+      </Animatable.View>
     );
   }
 
@@ -197,10 +243,17 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginBottom: Sizes.InnerFrame / 2,
+    marginBottom: 1,
     padding: Sizes.InnerFrame,
-    borderRadius: Sizes.RoundedBorders,
+    backgroundColor: Colors.ContentBackground
+  },
+
+  pendingContainer: {
     backgroundColor: Colors.Foreground
+  },
+
+  pendingText: {
+    color: Colors.LightestText
   },
 
   content: {
