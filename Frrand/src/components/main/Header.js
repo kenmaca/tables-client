@@ -18,25 +18,22 @@ export default class Header extends Component {
     };
   }
 
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => Geocoder.geocodePosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }).then(location => {
-        if (location[0]) {
-          this.setState({
-            region: [
-              location[0].locality, location[0].adminArea
-            ].filter(l => l).join(', ') || 'Nearby',
-            coords: position.coords
-          });
-        }
-      }), error => console.log(error), {
-        timeout: 20000,
-        maximumAge: 1000
+  componentWillReceiveProps(props) {
+    props.coords
+    && props.coords.latitude !== this.props.coords.latitude
+    && props.coords.longitude !== this.props.coords.longitude
+    && Geocoder.geocodePosition({
+      lat: props.coords.latitude,
+      lng: props.coords.longitude
+    }).then(location => {
+      if (location[0]) {
+        this.setState({
+          region: [
+            location[0].locality, location[0].adminArea
+          ].filter(l => l).join(', ') || 'Nearby'
+        });
       }
-    )
+    }).catch(e => console.log(e));
   }
 
   render() {

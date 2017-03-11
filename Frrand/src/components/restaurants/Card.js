@@ -22,33 +22,51 @@ import Stars from '../common/Stars';
 export default class Card extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      call: {
+        processed: false,
+        lastAttempted: 0
+      },
+      renderer: null
+    };
 
     // bindings
     this.update = this.update.bind(this);
     this.getName = this.getName.bind(this);
+    this.isAvailable = this.isAvailable.bind(this);
+    this.isPending = this.isPending.bind(this);
+    this.renderAvailable = this.renderAvailable.bind(this);
+    this.renderPending = this.renderPending.bind(this);
+    this.renderEmpty = this.renderEmpty.bind(this);
+    this.assignRenderer = this.assignRenderer.bind(this);
   }
 
   componentDidMount() {
+
+    // restaurant
     this.fbRef = Firebase.database().ref(`restaurants/${this.props.id}`);
     this.listener = this.fbRef.on(
-      'value', data => data.exists() && this.setState(data.val())
+      'value', data => data.exists() && this.setState(
+        data.val(), this.assignRenderer
+      )
     );
 
-    // refresh this view every minute
-    this.update();
+    // call stats (for pending status)
+    this.caRef = Firebase.database().ref(`calls/${this.props.id}`);
+    this.callListener = this.caRef.on(
+      'value', data => data.exists() && this.setState({
+        call: data.val()
+      }, this.assignRenderer)
+    );
   }
 
   componentWillUnmount() {
     this.fbRef && this.fbRef.off('value', this.listener);
-    this.timer && clearTimeout(this.timer);
+    this.caRef && this.caRef.off('value', this.callListener);
   }
 
   update() {
-    this.timer && clearTimeout(this.timer);
     this.setState({});
-    this.timer = setInterval(this.update, 5 * 60 * 1000);
   }
 
   getName() {
@@ -63,74 +81,116 @@ export default class Card extends Component {
     this.componentDidMount();
   }
 
-  render() {
-
-    // only present if there are seats available and within period
+  isAvailable() {
     return (
-      this.props.filter(this.state) ? (
-        <TouchableWithoutFeedback
-          onPress={() => Actions.web({
-            uri: this.state.url
-          })}>
-          <Animatable.View
-            animation='zoomIn'
-            duration={200}
-            style={styles.container}>
-            <View style={styles.content}>
-              <View style={styles.body}>
-                <View style={styles.header}>
-                  <Text style={styles.title}>
-                    {this.state.name || 'Unnamed'}
-                    <Text style={styles.location}>
-                      {
-                        ` · ${
-                          (
-                            this.props.distance
-                            && (
-                              this.props.distance >= 1
-                              ? `${this.props.distance.toFixed(1)} km`
-                              : `${(this.props.distance * 1000).toFixed(0)} m`
-                            )
-                          ) || this.state.location.address1
-                          || 'Nearby'}`
-                      }
-                    </Text>
-                  </Text>
+      this.state.name
+      && (parseInt(this.state.seatsAvailable) > 0)
+      && (this.state.availableUntil > Date.now())
+    );
+  }
+
+  isPending() {
+    return (
+      this.state.call.processed
+      && Date.now() - this.state.call.lastAttempted < 60 * 1000 * 100000
+    );
+  }
+
+  assignRenderer() {
+    let renderer = this.renderEmpty;
+    if (!this.props.filter(this.state)) {
+      renderer = this.renderEmpty;
+    } else if (this.isAvailable()) {
+      renderer = this.renderAvailable;
+    } else if (this.isPending()) {
+      renderer = this.renderPending;
+    }
+
+    this.setState({renderer: renderer});
+  }
+
+  renderAvailable() {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => Actions.web({
+          uri: this.state.url
+        })}>
+        <Animatable.View
+          animation='zoomIn'
+          duration={200}
+          style={styles.container}>
+          <View style={styles.content}>
+            <View style={styles.body}>
+              <View style={styles.header}>
+                <Text style={styles.title}>
+                  {this.state.name || 'Unnamed'}
                   <Text style={styles.location}>
                     {
-                      this.state.categories
-                      && (
-                        this.state.categories.map(
-                          category => category.title
-                        ).join(', ')
-                      ) || ''
+                      ` · ${
+                        (
+                          this.props.distance
+                          && (
+                            this.props.distance >= 1
+                            ? `${this.props.distance.toFixed(1)} km`
+                            : `${(this.props.distance * 1000).toFixed(0)} m`
+                          )
+                        ) || this.state.location.address1
+                        || 'Nearby'}`
                     }
                   </Text>
-                </View>
-                <CircularImage
-                  size={30}
-                  uri={this.state.image_url} />
-              </View>
-              <View style={styles.footer}>
-                <Text style={styles.validUntil}>
+                </Text>
+                <Text style={styles.location}>
                   {
-                    `${this.state.seatsAvailable || 0} seats until ${
-                      DateFormat(
-                        this.state.availableUntil,
-                        'h:MM TT'
-                      )
-                    }`
+                    this.state.categories
+                    && (
+                      this.state.categories.map(
+                        category => category.title
+                      ).join(', ')
+                    ) || ''
                   }
                 </Text>
-                <Stars rating={this.state.rating || 0} />
               </View>
+              <CircularImage
+                size={30}
+                uri={this.state.image_url} />
             </View>
-          </Animatable.View>
-        </TouchableWithoutFeedback>
-      ) : (
-        <View />
-      )
+            <View style={styles.footer}>
+              <Text style={styles.validUntil}>
+                {
+                  `${this.state.seatsAvailable || 0} seats until ${
+                    DateFormat(
+                      this.state.availableUntil,
+                      'h:MM TT'
+                    )
+                  }`
+                }
+              </Text>
+              <Stars rating={this.state.rating || 0} />
+            </View>
+          </View>
+        </Animatable.View>
+      </TouchableWithoutFeedback>
     );
+  }
+
+  renderPending() {
+    return (
+      <View>
+        <Text>
+          {`${this.getName()} is pending calling`}
+        </Text>
+      </View>
+    );
+  }
+
+  renderEmpty() {
+    return (
+      <View />
+    );
+  }
+
+  render() {
+    return this.state.renderer ? this.state.renderer() : this.renderEmpty();
   }
 }
 

@@ -4,11 +4,17 @@ import React, {
 import {
   StyleSheet, View, ListView
 } from 'react-native';
+
+// TODO: replace with native in RN43
+import FlatList from 'react-native/Libraries/CustomComponents/Lists/FlatList';
 import {
   Sizes, Colors
 } from '../../Const';
 import Firebase from '../../utils/Firebase';
 import Geofire from 'geofire';
+import {
+  callMore
+} from '../../views/More';
 
 // components
 import Card from './Card';
@@ -17,140 +23,110 @@ export default class AvailableList extends Component {
   constructor(props) {
     super(props);
 
+    // location
     this.gf = new Geofire(
       Firebase.database().ref('nearby')
     );
-    this.restaurants = {};
-    this.rows = [];
+    this.gfQuery = this.gf.query({
+      center: [
+        this.props.coords.latitude,
+        this.props.coords.longitude
+      ],
+      radius: 10
+    });
+
+    // rows
     this.state = {
-      data: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2
-      })
+      restaurants: {},
+      sorted: []
     };
 
     // bindings
-    this.callIfEmpty = this.callIfEmpty.bind(this);
-    this.update = this.update.bind(this);
     this.filter = this.filter.bind(this);
-    this.getVisible = this.getVisible.bind(this);
+    this.renderItem = this.renderItem.bind(this);
+    this.update = this.update.bind(this);
+  }
+
+  componentWillReceiveProps(props) {
+
+    // new coords incoming, update list
+    this.gfQuery.updateCriteria({
+      center: [
+        props.coords.latitude,
+        props.coords.longitude
+      ]
+    });
   }
 
   componentDidMount() {
-
-    // pull nearby from firebase based on location
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.gfQuery = this.gf.query({
-          center: [
-            position.coords.latitude,
-            position.coords.longitude
-          ],
-          radius: 20
-        });
-
-        // as restaurants appear, queue for appearance
-        this.gfEntered = this.gfQuery.on(
-          'key_entered',
-          (key, coords, distance) => {
-            this.restaurants[key] = {
+    this.gfEntered = this.gfQuery.on(
+      'key_entered',
+      (key, coords, distance) => {
+        let restaurants = Object.assign(
+          this.state.restaurants,
+          {
+            [key]: {
               coords: coords,
               distance: distance
-            };
-
-            // update display
-            this.setState({
-              data: this.state.data.cloneWithRows(
-                Object.keys(this.restaurants
-              ).sort(
-                (a, b) => (
-                  this.restaurants[a].distance > this.restaurants[b].distance
-                  ? 1: -1
-                )
-              ))
-            }, () => this.props.onChange(this.getVisible()));
+            }
           }
         );
 
-      }, error => console.log(error), {
-        timeout: 20000,
-        maximumAge: 1000
+        // update display
+        this.setState({
+          restaurants: restaurants,
+          sorted: Object.keys(
+            restaurants
+          ).sort(
+            (a, b) => (
+              restaurants[a].distance > restaurants[b].distance
+              ? 1: -1
+            )
+          )
+        });
       }
     );
-
-    // initial trigger to update view from server
-    this.callIfEmpty();
   }
 
   componentWillUnmount() {
     this.gfEntered && this.gfEntered.cancel();
-    this.timer && clearTimeout(this.timer);
-  }
-
-  callIfEmpty() {
-    this.timer && clearTimeout(this.timer);
-    if (Object.keys(this.restaurants).filter(
-      restaurant => Date.now() <= this.restaurants[restaurant].availableUntil
-    ).length < 6) this.props.callMore(this.props.getOptions());
-
-    // and check again in two minutes
-    this.timer = setInterval(this.callIfEmpty, 120000);
-  }
-
-  update() {
-    this.rows.forEach(row => row && row.setState({}));
-
-    // TODO: hacky, but wait for all rows to re-render before re-rendering
-    setTimeout(() => this.props.onChange(this.getVisible()), 500);
-  }
-
-  getVisible() {
-    return Object.values(
-      this.rows.filter(
-
-        // only show available Cards
-        row => row && this.filter(row.state)
-      ).reduce(
-
-        // remove duplicate Cards
-        (visible, n) => Object.assign(visible, {[n.getName()]: n}), {}
-      )
-    );
   }
 
   filter(restaurant) {
     let options = this.props.getOptions();
-    return (
-      restaurant.name
-      && (parseInt(restaurant.seatsAvailable) > 0)
-      && (restaurant.availableUntil > Date.now())
 
-      // price range
-      && (
-        !options.price
-        || options.price === restaurant.price.length
+    // price range
+    return restaurant.name && (
+      !options.price
+      || options.price === restaurant.price.length
 
-      // category filter
-      ) && (
-        options.options.length <= 0
-        || restaurant.categories.filter(
-          category => options.options.indexOf(category.alias) > -1
-        ).length > 0
-      )
+    // category filter
+    ) && (
+      options.options.length <= 0
+      || restaurant.categories.filter(
+        category => options.options.indexOf(category.alias) > -1
+      ).length > 0
     )
+  }
+
+  renderItem(restaurant) {
+    return (
+      <Card
+        filter={this.filter}
+        id={restaurant.item}
+        distance={this.state.restaurants[restaurant.item].distance} />
+    )
+  }
+
+  update() {
   }
 
   render() {
     return (
-      <ListView
+      <FlatList
         style={styles.container}
-        dataSource={this.state.data}
-        renderRow={data => (
-          <Card
-            ref={ref => this.rows.push(ref)}
-            filter={this.filter}
-            id={data}
-            distance={this.restaurants[data].distance} />
-        )} />
+        data={this.state.sorted}
+        renderItem={this.renderItem} />
     );
   }
 }

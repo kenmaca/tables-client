@@ -15,26 +15,67 @@ import {
 } from './More';
 
 // components
-import * as Animatable from 'react-native-animatable';
 import ParallaxView from 'react-native-parallax-view';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../components/main/Header';
 import Options from '../components/main/Options';
 import AvailableList from '../components/restaurants/AvailableList';
-import AnimatedLoader from '../components/common/AnimatedLoader';
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLoader: true
+      coords: {
+        latitude: 0,
+        longitude: 0
+      }
     };
+
+    // bindings
+    this.getOptions = this.getOptions.bind(this);
+    this.onOptionChange = this.onOptionChange.bind(this);
+    this.background = require('../../res/media/cover.jpg');
   }
 
   componentDidMount() {
 
-    // toggle loader on initial load
-    this.refs.available.update();
+    // update location continiously
+    this.location = navigator.geolocation.watchPosition(
+      position => this.setState({
+        coords: position.coords
+      }), error => console.log(error), {
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    );
+  }
+
+  componentWillUnmount() {
+
+    // clear location
+    this.location && navigator.geolocation.clearWatch(this.location);
+
+    // clear option change
+    this.optionChange && clearTimeout(this.optionChange);
+  }
+
+  getOptions() {
+    return this.refs.options && this.refs.options.getOptions();
+  }
+
+  onOptionChange() {
+
+    // delayed change to wait for options to update and user to finalize
+    // selection, and clear previously queued change
+    this.optionChange && clearTimeout(this.optionChange);
+    this.optionChange = setTimeout(() => {
+
+      // ask for more restaurants
+      this.refs.options && callMore(this.refs.options.getOptions());
+
+      // signal to cards to update
+      this.refs.available && this.refs.available.update();
+    }, 500);
   }
 
   render() {
@@ -43,34 +84,22 @@ export default class Main extends Component {
         <View style={styles.parallax}>
           <ParallaxView
             header={(
-              <Header />
+              <Header coords={this.state.coords} />
             )}
             windowHeight={300}
-            backgroundSource={require('../../res/media/cover.jpg')}
+            backgroundSource={this.background}
             scrollableViewStyle={styles.content}>
             <AvailableList
               ref='available'
-              callMore={callMore}
-              onChange={visible => this.setState({
-                showLoader: visible.length <= 0
-              })}
-              getOptions={
-                () => this.refs.options && this.refs.options.getOptions()
-              } />
+              coords={this.state.coords}
+              getOptions={this.getOptions} />
             <View style={styles.footer}>
               <View style={styles.separator} />
               <View style={styles.logo}>
-                {
-                  this.state.showLoader
-                  ? (
-                    <AnimatedLoader color={Colors.LightestText} />
-                  ): (
-                    <MaterialIcon
-                      name='restaurant'
-                      color={Colors.LightestText}
-                      size={30} />
-                  )
-                }
+                <MaterialIcon
+                  name='restaurant'
+                  color={Colors.LightestText}
+                  size={30} />
               </View>
               <Text style={styles.moreText}>
                 Restaurants will show up automatically above as soon
@@ -80,26 +109,8 @@ export default class Main extends Component {
           </ParallaxView>
           <Options
             ref='options'
-            onChange={
-              () => {
-
-                // send out new Task and update available list
-                this.taskInitiator && clearTimeout(this.taskInitiator);
-                this.taskInitiator = setTimeout(
-                  () => callMore(this.refs.options.getOptions()),
-                  3000
-                );
-                this.refs.available && this.refs.available.update();
-              }
-            } />
+            onChange={this.onOptionChange} />
         </View>
-        <Animatable.View
-          ref='ballContainer'
-          style={styles.ballContainer}>
-          <Animatable.View
-            ref='ball'
-            style={styles.ball} />
-        </Animatable.View>
       </View>
     );
   }
