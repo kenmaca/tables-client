@@ -7,6 +7,7 @@ export const Colors = {
   Background: '#262d3b',
   Foreground: '#202633',
   ContentBackground: '#ffffff',
+  ToolbarBackground: '#000000',
   ModalBackground: '#66C75C',
 
   // text

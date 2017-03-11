@@ -43,7 +43,10 @@ export default class Main extends Component {
     this.location = navigator.geolocation.watchPosition(
       position => this.setState({
         coords: position.coords
-      }), error => console.log(error), {
+      }, () => callMore(
+        this.state.coords,
+        this.refs.options.getOptions && this.refs.options.getOptions()
+      )), error => console.log(error), {
         timeout: 20000,
         maximumAge: 1000
       }
@@ -71,10 +74,9 @@ export default class Main extends Component {
     this.optionChange = setTimeout(() => {
 
       // ask for more restaurants
-      this.refs.options && callMore(this.refs.options.getOptions());
-
-      // signal to cards to update
-      this.refs.available && this.refs.available.update();
+      this.refs.options && callMore(
+        this.state.coords, this.refs.options.getOptions()
+      );
     }, 500);
   }
 
@@ -94,12 +96,14 @@ export default class Main extends Component {
               coords={this.state.coords}
               getOptions={this.getOptions} />
             <View style={styles.footer}>
-              <View style={styles.separator} />
-              <View style={styles.logo}>
+              <View style={styles.bar}>
+                <View style={styles.separator} />
                 <MaterialIcon
+                  style={styles.logo}
                   name='restaurant'
                   color={Colors.LightestText}
                   size={30} />
+                <View style={styles.separator} />
               </View>
               <Text style={styles.moreText}>
                 Restaurants will show up automatically above as soon
@@ -141,18 +145,23 @@ const styles = StyleSheet.create({
   },
 
   separator: {
-    alignSelf: 'stretch',
-    marginBottom: -Sizes.InnerFrame * 1.75,
+    flex: 1,
+    height: 0,
     borderTopColor: Colors.LightestText,
     borderTopWidth: 0.5,
   },
 
-  logo: {
+  bar: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: Sizes.InnerFrame,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    width: 50,
-    backgroundColor: Colors.Background,
+    justifyContent: 'space-between'
+  },
+
+  logo: {
+    marginLeft: Sizes.InnerFrame,
+    marginRight: Sizes.InnerFrame
   },
 
   moreText: {

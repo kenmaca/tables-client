@@ -40,6 +40,7 @@ export default class Card extends Component {
     this.renderPending = this.renderPending.bind(this);
     this.renderEmpty = this.renderEmpty.bind(this);
     this.assignRenderer = this.assignRenderer.bind(this);
+    this.tracker = this.tracker.bind(this);
   }
 
   componentDidMount() {
@@ -59,9 +60,19 @@ export default class Card extends Component {
         call: data.val()
       }, this.assignRenderer)
     );
+
+    // start tracker to wipe when expired
+    this.tracker();
+  }
+
+  tracker() {
+    this.trackerTimeout && clearTimeout(this.trackerTimeout);
+    this.assignRenderer();
+    this.trackerTimeout = setTimeout(this.tracker, 1 * 60 * 1000);
   }
 
   componentWillUnmount() {
+    this.trackerTimeout && clearTimeout(this.trackerTimeout);
     this.fbRef && this.fbRef.off('value', this.listener);
     this.caRef && this.caRef.off('value', this.callListener);
   }
@@ -93,7 +104,7 @@ export default class Card extends Component {
   isPending() {
     return (
       this.state.call.processed
-      && Date.now() - this.state.call.lastAttempted < 60 * 1000
+      && Date.now() - this.state.call.lastAttempted < 2 * 60 * 1000
     );
   }
 

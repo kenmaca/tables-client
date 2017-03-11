@@ -44,7 +44,6 @@ export default class AvailableList extends Component {
     // bindings
     this.filter = this.filter.bind(this);
     this.renderItem = this.renderItem.bind(this);
-    this.update = this.update.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -118,9 +117,6 @@ export default class AvailableList extends Component {
     )
   }
 
-  update() {
-  }
-
   render() {
     return (
       <FlatList
@@ -135,6 +131,6 @@ export default class AvailableList extends Component {
 const styles = StyleSheet.create({
   container: {
     margin: Sizes.InnerFrame,
-    marginBottom: Sizes.OuterFrame * 2
+    marginBottom: Sizes.InnerFrame * 3
   }
 });

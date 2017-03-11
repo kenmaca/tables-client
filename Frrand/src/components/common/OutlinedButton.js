@@ -34,7 +34,7 @@ export default class OutlinedButton extends Component {
             fontSize: this.props.size
           }
         ]}>
-          {this.props.text && this.props.text.toUpperCase()}
+          {this.props.text}
         </Text>
       </View>
     );

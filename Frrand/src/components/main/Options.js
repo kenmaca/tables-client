@@ -181,7 +181,7 @@ export default class Options extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.ModalBackground
+    backgroundColor: Colors.ToolbarBackground
   },
 
   buttons: {

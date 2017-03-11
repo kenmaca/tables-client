@@ -57,19 +57,20 @@ export default class OptionButton extends Component {
           this.props.onPress && this.props.onPress();
         }}>
         <OutlinedButton
+          color={Colors.Background}
           highlight={
             (
               this.props.selected
               || !this.props.disableToggle
               && this.isSelected()
-            ) && Colors.Text
+            ) && Colors.Primary
           }
           highlightFont={
             (
               this.props.selected
               || !this.props.disableToggle
               && this.isSelected()
-            ) && Colors.Primary
+            ) && Colors.Text
           }
           text={this.state.text || this.props.text}
           style={styles.container} />
