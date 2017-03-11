@@ -27,6 +27,7 @@ export default class Card extends Component {
 
     // bindings
     this.update = this.update.bind(this);
+    this.getName = this.getName.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +49,10 @@ export default class Card extends Component {
     this.timer && clearTimeout(this.timer);
     this.setState({});
     this.timer = setInterval(this.update, 5 * 60 * 1000);
+  }
+
+  getName() {
+    return this.props.id;
   }
 
   componentWillReceiveProps(props) {

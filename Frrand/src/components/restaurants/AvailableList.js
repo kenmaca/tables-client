@@ -104,7 +104,17 @@ export default class AvailableList extends Component {
   }
 
   getVisible() {
-    return this.rows.filter(row => row && this.filter(row.state));
+    return Object.values(
+      this.rows.filter(
+
+        // only show available Cards
+        row => row && this.filter(row.state)
+      ).reduce(
+
+        // remove duplicate Cards
+        (visible, n) => Object.assign(visible, {[n.getName()]: n}), {}
+      )
+    );
   }
 
   filter(restaurant) {
