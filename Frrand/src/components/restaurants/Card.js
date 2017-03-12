@@ -254,8 +254,8 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginBottom: 5,
-    marginTop: 5,
+    marginBottom: 2,
+    marginTop: 2,
     backgroundColor: Colors.ContentBackground
   },
 
