@@ -87,24 +87,26 @@ export default class Main extends Component {
           contentContainerStyle={styles.content}>
           <Header coords={this.state.coords} />
           <View style={styles.list}>
-            <AvailableList
-              ref='available'
-              coords={this.state.coords}
-              getOptions={this.getOptions} />
-            <View style={styles.footer}>
-              <View style={styles.bar}>
-                <View style={styles.separator} />
-                <MaterialIcon
-                  style={styles.logo}
-                  name='restaurant'
-                  color={Colors.LightestText}
-                  size={30} />
-                <View style={styles.separator} />
+            <View style={styles.offsetList}>
+              <AvailableList
+                ref='available'
+                coords={this.state.coords}
+                getOptions={this.getOptions} />
+              <View style={styles.footer}>
+                <View style={styles.bar}>
+                  <View style={styles.separator} />
+                  <MaterialIcon
+                    style={styles.logo}
+                    name='restaurant'
+                    color={Colors.LightestText}
+                    size={30} />
+                  <View style={styles.separator} />
+                </View>
+                <Text style={styles.moreText}>
+                  Restaurants will show up automatically above as soon
+                  as they confirm availability
+                </Text>
               </View>
-              <Text style={styles.moreText}>
-                Restaurants will show up automatically above as soon
-                as they confirm availability
-              </Text>
             </View>
           </View>
         </ScrollView>
@@ -127,6 +129,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Foreground
   },
 
+  offsetList: {
+    marginTop: -Sizes.OuterFrame * 2,
+  },
+
   content: {
     minHeight: Sizes.Height
   },
@@ -136,7 +142,8 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: Colors.Foreground
   },
 
   separator: {

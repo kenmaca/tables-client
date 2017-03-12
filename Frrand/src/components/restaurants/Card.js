@@ -254,12 +254,15 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginBottom: 1,
+    marginBottom: 5,
+    marginTop: 5,
     backgroundColor: Colors.ContentBackground
   },
 
   pendingContainer: {
-    backgroundColor: Colors.FadedContentBackground
+    backgroundColor: Colors.FadedContentBackground,
+    marginBottom: 1,
+    marginTop: 1
   },
 
   pendingText: {
