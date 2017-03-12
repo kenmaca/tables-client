@@ -57,6 +57,17 @@ export default class AvailableList extends Component {
     });
   }
 
+  getRestaurantOrder(restaurants) {
+    return Object.keys(
+      restaurants
+    ).sort(
+      (a, b) => (
+        restaurants[a].distance > restaurants[b].distance
+        ? 1: -1
+      )
+    );
+  }
+
   componentDidMount() {
     this.gfEntered = this.gfQuery.on(
       'key_entered',
@@ -74,21 +85,29 @@ export default class AvailableList extends Component {
         // update display
         this.setState({
           restaurants: restaurants,
-          sorted: Object.keys(
-            restaurants
-          ).sort(
-            (a, b) => (
-              restaurants[a].distance > restaurants[b].distance
-              ? 1: -1
-            )
-          )
+          sorted: this.getRestaurantOrder(restaurants)
         });
       }
     );
+
+    this.gfExited = this.gfQuery.on(
+      'key_exited',
+      (key, coords, distance) => {
+        let restaurants = this.state.restaurants;
+        delete restaurants[key];
+
+        // update display
+        this.setState({
+          restaurants: restaurants,
+          sorted: this.getRestaurantOrder(restaurants)
+        });
+      }
+    )
   }
 
   componentWillUnmount() {
     this.gfEntered && this.gfEntered.cancel();
+    this.gfExited && this.gfExited.cancel();
   }
 
   filter(restaurant) {
