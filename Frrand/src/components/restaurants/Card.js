@@ -104,7 +104,7 @@ export default class Card extends Component {
   isPending() {
     return (
       this.state.call.processed
-      && Date.now() - this.state.call.lastAttempted < 2 * 60 * 1000
+      && Date.now() - this.state.call.lastAttempted < 3 * 60 * 1000
     );
   }
 
