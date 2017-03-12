@@ -4,7 +4,7 @@ export const Colors = {
   Primary: '#66c75c',
 
   // backgrounds
-  Background: '#E23251',
+  Background: '#282E37',
   Foreground: '#202633',
   ContentBackground: '#ffffff',
   FadedContentBackground: '#232938',

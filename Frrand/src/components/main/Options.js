@@ -72,6 +72,7 @@ export default class Options extends Component {
       <View style={styles.container}>
         <ScrollView
           horizontal
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.buttons}>
           <OptionButton
             ref='price'
