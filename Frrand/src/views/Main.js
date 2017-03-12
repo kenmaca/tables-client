@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
   },
 
   offsetList: {
-    marginTop: -Sizes.OuterFrame * 2,
+    flex: 1,
+    marginTop: -Sizes.OuterFrame * 2
   },
 
   content: {
