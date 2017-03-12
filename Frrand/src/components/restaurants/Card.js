@@ -2,7 +2,7 @@ import React, {
   Component
 } from 'react';
 import {
-  StyleSheet, View, Text, TouchableWithoutFeedback
+  StyleSheet, View, Text, Image, TouchableWithoutFeedback
 } from 'react-native';
 import {
   Sizes, Colors
@@ -162,9 +162,6 @@ export default class Card extends Component {
                   }
                 </Text>
               </View>
-              <CircularImage
-                size={30}
-                uri={this.state.image_url} />
             </View>
             <View style={styles.footer}>
               <Text style={styles.validUntil}>
@@ -180,6 +177,9 @@ export default class Card extends Component {
               <Stars rating={this.state.rating || 0} />
             </View>
           </View>
+          <Image
+            style={styles.photo}
+            source={{uri: this.state.image_url}} />
         </Animatable.View>
       </TouchableWithoutFeedback>
     );
@@ -255,7 +255,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginBottom: 1,
-    padding: Sizes.InnerFrame,
     backgroundColor: Colors.ContentBackground
   },
 
@@ -267,8 +266,13 @@ const styles = StyleSheet.create({
     color: Colors.LightestText
   },
 
-  content: {
+  photo: {
     flex: 1
+  },
+
+  content: {
+    flex: 3,
+    padding: Sizes.InnerFrame
   },
 
   body: {
