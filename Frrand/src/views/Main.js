@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
   },
 
   footer: {
+    paddingTop: Sizes.OuterFrame,
     alignItems: 'center',
     backgroundColor: Colors.Foreground
   },
