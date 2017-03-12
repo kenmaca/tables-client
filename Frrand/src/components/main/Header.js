@@ -29,7 +29,12 @@ export default class Header extends Component {
       if (location[0]) {
         this.setState({
           region: [
-            location[0].locality, location[0].adminArea
+            (
+              location[0].subLocality
+              || location[0].locality
+              || location[0].subAdminArea
+            ),
+            location[0].adminArea || location[0].country
           ].filter(l => l).join(', ') || 'Nearby'
         });
       }
