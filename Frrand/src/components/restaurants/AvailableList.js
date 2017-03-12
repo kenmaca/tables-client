@@ -114,7 +114,7 @@ export default class AvailableList extends Component {
     let options = this.props.getOptions();
 
     // price range
-    return restaurant.name && (
+    return restaurant.price && (
       !options.price
       || options.price === restaurant.price.length
 
