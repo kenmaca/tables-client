@@ -1,13 +1,14 @@
 export const Colors = {
 
   // scheme
-  Primary: '#66C75C',
+  Primary: '#66c75c',
 
   // backgrounds
   Background: '#262d3b',
   Foreground: '#202633',
   ContentBackground: '#ffffff',
-  ToolbarBackground: '#000000',
+  FadedContentBackground: '#232938',
+  ToolbarBackground: '#66c75c',
   ModalBackground: '#66C75C',
 
   // text

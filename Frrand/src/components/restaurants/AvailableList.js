@@ -130,7 +130,8 @@ export default class AvailableList extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: -Sizes.InnerFrame * 2,
     margin: Sizes.InnerFrame,
-    marginBottom: Sizes.InnerFrame * 3
+    marginBottom: Sizes.InnerFrame
   }
 });

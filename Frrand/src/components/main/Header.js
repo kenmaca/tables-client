@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     padding: Sizes.OuterFrame,
+    paddingTop: Sizes.OuterFrame * 3,
     paddingBottom: Sizes.OuterFrame * 2
   },
 

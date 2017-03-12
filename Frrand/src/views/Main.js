@@ -2,7 +2,7 @@ import React, {
   Component
 } from 'react';
 import {
-  View, StyleSheet, Text, Image, TouchableOpacity, InteractionManager
+  View, StyleSheet, Text, Image, TouchableOpacity, ScrollView
 } from 'react-native';
 import {
   Colors, Sizes
@@ -83,14 +83,10 @@ export default class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.parallax}>
-          <ParallaxView
-            header={(
-              <Header coords={this.state.coords} />
-            )}
-            windowHeight={200}
-            backgroundSource={this.background}
-            scrollableViewStyle={styles.content}>
+        <ScrollView
+          contentContainerStyle={styles.content}>
+          <Header coords={this.state.coords} />
+          <View style={styles.list}>
             <AvailableList
               ref='available'
               coords={this.state.coords}
@@ -110,11 +106,11 @@ export default class Main extends Component {
                 as they confirm availability
               </Text>
             </View>
-          </ParallaxView>
-          <Options
-            ref='options'
-            onChange={this.onOptionChange} />
-        </View>
+          </View>
+        </ScrollView>
+        <Options
+          ref='options'
+          onChange={this.onOptionChange} />
       </View>
     );
   }
@@ -126,14 +122,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Background
   },
 
-  parallax: {
-    flex: 1
+  list: {
+    flex: 1,
+    backgroundColor: Colors.Foreground
   },
 
   content: {
-    flex: 1,
-    top: -Sizes.OuterFrame * 2,
-    backgroundColor: Colors.Transparent
+    minHeight: Sizes.Height
   },
 
   cards: {
