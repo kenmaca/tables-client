@@ -140,6 +140,7 @@ export default class AvailableList extends Component {
     return (
       <FlatList
         key='restaurants'
+        keyExtractor={(item, i) => i}
         style={styles.container}
         data={this.state.sorted}
         renderItem={this.renderItem} />

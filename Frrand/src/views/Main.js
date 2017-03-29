@@ -84,7 +84,6 @@ export default class Main extends Component {
     return (
       <View style={styles.container}>
         <ScrollView
-          bounces={false}
           contentContainerStyle={styles.content}>
           <Header coords={this.state.coords} />
           <View style={styles.list}>

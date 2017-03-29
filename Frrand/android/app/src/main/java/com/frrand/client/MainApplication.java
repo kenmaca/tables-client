@@ -3,7 +3,6 @@ package com.frrand.client;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
 import com.devfd.RNGeocoder.RNGeocoderPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -32,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new RNGeocoderPackage(),
             new VectorIconsPackage()
       );
